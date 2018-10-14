@@ -1,0 +1,180 @@
+---
+title: 'Lexture 1: Functions and flow control'
+author: "Maja Kuzman"
+date: 'October 2018'
+output: html_document
+---
+
+## Remarks:  
+
+If you have a code you don't want to run, use eval=FALSE
+```{r, eval=FALSE}
+Some code that does not run or has an error
+
+```
+
+If you only want to show the results and not the code you used, use echo=FALSE
+```{r, echo=FALSE}
+#Some code that runs well but output is too long or ugly..
+
+SomeCode <- iris[,1:2]
+plot(SomeCode)
+
+```
+
+If you don't want to show warnings or messages, message=FALSE, warning=FALSE..  
+For more information use cheat sheet: https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf and this light basics https://rmarkdown.rstudio.com/authoring_basics.html 
+
+
+# Functions  
+
+Let us solve example from homework:  
+Estimate the value of the number pi by randomly generating points inside a square and checking whether they fall within a circle inscribed in that square. Repeat this 1,000,000 times (use function rep). How much (in % terms) is it different from actual value of pi (you can use the pi variable that is part of the base R package to do this comparison) if you first set the seed to 1234?  
+
+
+```{r}
+set.seed(1234)
+sampleSet <- seq(-1,1,0.0000001)
+x <- sample(sampleSet,1000000)
+y <- sample(sampleSet,1000000)
+sumOfSquares <- (x^2+y^2)
+piEvaluated <- mean(sumOfSquares<1)*4
+abs(pi/piEvaluated-1)*100
+
+```
+
+They differ 0.044%. But this is dependent on the randomness used! Do it again for a different seed:
+```{r}
+set.seed(555)
+sampleSet <- seq(-1,1,0.0000001)
+x <- sample(sampleSet,1000000)
+y <- sample(sampleSet,1000000)
+sumOfSquares <- (x^2+y^2)
+piEvaluated <- mean(sumOfSquares<1)*4
+abs(pi/piEvaluated-1)*100
+
+```
+
+If we want to try to do this a bunch of times (for example, a million), we will need to run this code a million times. This is a common situation. It would be cool if we could wrap this code into something and just run it by calling the name of the codewrap instead of copy pasting whole code. This is what functions are for!  
+Lets write a function that will take a seed, and for that seed rerun the error!
+
+```{r}
+codeWrap <- function(someSeed=sample(1:1000)){
+     set.seed(someSeed)
+     sampleSet <- seq(-1,1,0.0000001)
+     x <- sample(sampleSet,1000000)
+     y <- sample(sampleSet,1000000)
+     sumOfSquares <- (x^2+y^2)
+     piEvaluated <- mean(sumOfSquares<1)*4
+     abs(pi/piEvaluated-1)*100
+}
+codeWrap(1234)
+```
+
+### Things to notice:  
+    1. Function format: 
+    
+    functionName <- function(arguments, 
+                             argumentWithDefault=someValue){
+        #we do some operations here
+        returnedValueComesLast
+    }
+    
+    2. Default arguments - default value assigned if argument is not provided   
+    3. Return value - last or explicitly specified by return()
+    4. All variables used inside the function only exist when function is called! They get destroyed when function call ends!  
+    5. Function call:  
+        functionName(realArgument)  
+        6. If you want to save a value ** <- ** 
+    7. If we want to return more than 1 value - put them in a list !  
+    8. If we want to allow for any number of arguments, use ... (see example below:)
+    9. print will not return anything! 
+    10. message(), warning(), stop()
+
+If you want to see what a function looks like in R, just call the function withouth parentheses 
+```{r}
+codeWrap
+```
+You can do the same with the predefined functions:
+```{r}
+sd
+
+```
+
+Some functions can take any number of values as arguments:
+
+```{r}
+sum(1:5)
+sum(1:50)
+sum
+```
+
+This is handled easily by ... as argument. **Be careful!** All other arguments must be specified by names.
+```{r}
+myFunction <- function(..., someArgument){
+    y <- unlist(list(...))
+    if(someArgument) {
+        x <- sum(y)/(length(y)+1)
+    }
+    if(!someArgument) {
+        x <- sum(y)/(length(y))
+    }
+    
+    x
+    
+}
+#myFunction(1,2,3, FALSE)
+myFunction(1,2,3, someArgument = FALSE)
+myFunction(1,2,3, someArgument = TRUE)
+
+```
+
+### A note on environments:  
+
+When a function is called, a new *environment* exists for that function. That means that the variables which are created inside the function only live as long as the function lives, and are deleted later. They are called **local** variables. Other types of variables are **global** variables. Those are the ones which are defined outside of functions, in so called **global environment**. They are visible and available in all environments. It is generally a bad call to use global variables inside functions because if a user changes them once outside of a function, the function will change. This is why arguments are passed to functions - we explicitly choose which variables we want to work with in a function. Those variables will be copied to *local environment of the function* and the function will operate on their copies. Once the function is over, the local environment is destroyed and only thing that is saved is the value returned to global environment. See picture:  
+
+![environments](https://user-images.githubusercontent.com/37149324/46868255-01dbdd00-ce28-11e8-957f-ace712b4bdbd.JPG)
+
+*Who wants to know more: environments in R*  http://adv-r.had.co.nz/Environments.html      
+
+
+*In R, when passing an argument to a function, the variable is copied and a copy is handeled in the function. After the function exits, the copy of the variable is destroyed and does not exist anymore. In programming, this is called "passing by value" , as oposed to "passing by reference" . If a variable is passed by reference, it is not copied to a function, but a function gets the real variable. Whatever happens to that variable is visible when the function ends.* 
+*It is possible to pass the environments by reference in R! This will enable you NOT TO COPY LARGE OBJECTS when passing them to functions, but to work on them directly! Look at the following example:  *
+
+```{r}
+zz <- new.env()
+foo <- data.frame(col1 = c(1,2,3,4,5))
+zz$foo  <- foo
+zz$foo
+foo
+changer <- function(blah) {
+   blah$foo$col2 <- 5
+   foo$col2 <- 5
+}
+changer(zz)
+changer(foo)
+zz$foo
+foo
+
+```
+*However, Note that if you hope to use pass-by-reference simply to avoid the performance implications of copying an object that isn't modified (as is common in other languages with constant references), R does this automatically FOR DATA FRAMES! *
+
+## Exercises:  
+### 1. counting elements in a list  
+1) Write a function that will take one argument, you can assume it will be a vector, and print all occurences of all elements in that vector. (Use function table.) The function should return a number of elements in the vector.
++
+The function should take any number of elements as arguments and also produce a plot of that table. 
+++
+The function should return the number of elements that appear in at least 2 vectors.   
+
+
+### 2. pi estimation   
+
+- Create a data frame like in pi estimation exercise, with 1 000 000 random x and y cordinates from -1 to 1. (use function runif )  
+- Add a column insideCircle which will say TRUE if point x,y belongs to a circle within the square (x^2+y^2<=1)  
+- Add a column that will represent groups - create 10 different groups of eaqual sizes. We will calculate % of error for each group separately to see if we can assess the overall error variance.  
+- Use function split to split the data frame into 10 different data frames based on group.  
+- calculate % error for each group using sapply.  
+
+Extra: Repeat everything for 50 groups instead of 10. How variable are results compared to 10 groups - calculate mean and sd and comment?  
+
