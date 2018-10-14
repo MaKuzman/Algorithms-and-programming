@@ -1,0 +1,622 @@
+---
+title: "Practical session - Introduction to R"
+output: html_notebook
+date: October 9th 2018
+author: Maja Kuzman
+---
+
+This notebook contains all code, explanations and exercises for the introductory part of the course. After using this notebook, commit and push the changes to GitHub.
+
+#What is R and Rstudio
+
+R is a statistical programming language, easily extendable with packages. Great thing about it is a large active community. Rstudio is a great development environment for R. You can use R studio in different ways. 
+
+### Exercise : Get started  
+
+#### We can use R as a calculator!  
+
+Console is a place where you can interactively run R commands (and see the results right away).
+Try typing 9+2 to console and push enter!  
+
+...No surprise there...  
+
+Whatever you write in the console is executed right away but if you want to save the code that you are writing, there is a better way to do this. Go to File -> New File -> R script. By doing this, an empty file appears in the top left window.  
+
+Type (9+2)*2 to that file and push enter!  
+
+...Nothing happened... Your cursor moves to the next line and you can add another R command. But if you add normal text and exercute it it will produce an error. When you write an R script the code is not executed right away. 
++ If you put your cursor anywhere in the line which you wish to execute and hold CTRL and push ENTER, the code in that line is executed. You can see the output of this in the console.   
++ If you HIGHLIGHT just some part of the code (try highlighting 9+2 in the first line) you can also hold CTRL and push ENTER and the highlighted part will execute.  
+
+#### We can use R as a notebook / calculator. 
+
+The most handy way for using R to write reports and do research is to use R notebooks. Go to File -> New file -> R Notebook and open a new notebook file.  
+
+The very cool thing about R notebook is that it enables you to write comments and regular text withouth producing an error, but it also enables you to add special part (chunks for code) to notebooks where you can write and execute R code.  
+
+Write your text to this part.  
+
+Push **Ctrl+Alt+I** to add new Rscript chunk to the text. Do it and try to add two numbers there, and multipy them in the line below. Execute only one line by holding **Ctrl+Enter** inside line you want to execute. Execute the entire chunk by pushing play (Run Current Chunk). The result appears below the code chunk.  
+
+```{r}
+9+2
+11+17
+
+```
+
+
+##### Notice that code chunks are ALWAYS marked with specific signs - they start with a line containing \`\`\`{r} and nothing else, any number of lines with code, and end with a line containing \`\`\`. If you want to write normal text inside the code chunk, you can only do it as a comment, after writing #. All text in that line after # is not executed.
+
+To save your work go to  File -> save. Your code is automatically saved in .Rmd file and HTML output is also created. Only the code that was executed will be shown in HTML output. You can create Word document or PDF files easily by changing the knitting options. For this course, you will create your own HTML output.
+
+
+Now that you familiarized yourself with R notebooks, we can start to explore R! 
+
+As previousely mentioned, R can be used as a calculator. There are different operators that can be used in base R, 
+to add two numbers, use +
+substraction: -
+multiplication: *
+division: /
+potention: ^ 
+modulo: %%
+whole number division: %/%
+
+### Exercise 1: Simple operations on numbers.
+Use the code chunk to solve the following:
+What is the product of numbers 13 and 3 - check by using * ? 
+What is the result of 13/3? How about 13%/%3? 
+Try also 13%%3.  
+
+```{r}
+13%/%3
+
+
+```
+You can execute the code by highlighting all lines you wish to execute, or by pressing CTRL+ENTER within one line, or you can execute the entire chunk by pushing "play" in the top right corner of the chunk.
+
+*We can even do better than that...* 
+
+# The basics: Variables and types
+
+R is not used world wide because it can add numbers together.. There are more powerful things you can do with it. 
+
+Simplest data sets in R are called **vector**s. You can make a vector by using the function c() (concatenate). Here is an example of vectors myFirstNumber and myFirstvector:
+
+```{r}
+myFirstNumber <- 0.1
+myFirstVector <- c(2, 3, 7, 8)
+myFirstNumber*myFirstVector==c(0.2,0.3,0.7,0.8)
+
+
+
+```
+Number 0.1 is stored in a *variable* called myFirstNumber. Numbers 2,5,7 and 8 are stored in a *variable* called myFirstVector. Variables are "containers" for data. To confirm this, *call* the vector by typing the variables name and executing the command or you can print its content by using the function *print*. If you try to call a variable that you did not previousely initialized, R will tell you that the variable does not exist.
+When writing code, there is a very helpful hint: use TAB button to autocomplete the code you write. Try to write "myF" and press TAB inside of a code chunk. The code should autocomplete. Now push CTRL+ENTER to execute it. 
+
+**When you define a variable, it will always be available until you delete it or exit R.**
+
+
+Variables in R can have different **data types**. This is a quick overview of different types of data in R. In this part you do not have to understand how to deal with the data, just make sure you understand the differences.
+
+Data in R can be organized in vectors, matrices, arrays, data frames, lists and factors.
+
+###Vectors:
+
+
+Vectors are linear collections of data. Basically, they are **data of elements of same type** written in a line, stored in a variable.
+
+```{r}
+nVec <- c(1, 5, 7, 9, 12.5) # numeric vector
+cVec <- c("a", "b", "some words") # character vector
+lVec <- c(TRUE, FALSE, T, T, F) # logical vector
+
+vvec <- c(1,5, "nesto")
+vvec
+```
+
+We stored numbers (words, logical statements) in **variables** numVec (chaVec, logvec) Check this by calling the variables: 
+
+```{r}
+nVec
+cVec
+lVec
+```
+You can execute the code by highlighting all lines you wish to execute, or by pressing CTRL+ENTER within one line, or you can execute the entire chunk by pushing "play" in the top right corner of the chunk.
+
+### Matrices
+Matrices are tables that have rows and columns and store elements of same type.
+```{r}
+y <- matrix(1:20, nrow=5,ncol=4)
+y
+```
+
+
+### Data frames
+
+Data frames are tables that have rows and columns and are very simmilar to matrices. Difference is that in data frames, each column has one type of data. More columns can have the same type of data but one column can only store one data type. They are most common data types that we use in research - for example, each excel table is one data frame.
+
+```{r}
+mydf <- data.frame( firstColumn = c(1,5,7),
+                    secondColumn = c("a","b","third Element"))
+mydf
+```
+
+### Lists
+When you are dealing with a collection of data in R in which every object has different number of elements, and elements have different types, you can store this in a list of elements.
+
+```{r}
+l <- list(firstElement = c(1,5,44,6),
+          second = c("a", 3),
+          y)
+l
+
+typeof(l[1])
+str(l)
+l
+unlist(l[c(1,3)])
+```
+This list contains 3 elements. First element is called "firstElement" and contains numbers 1,5,44 and 6.
+Second element of the list is called "second" and contains words "a" and "3". You can see here that 3 is not a number, but is converted to character. This is because all elements in a vector must have the same type.
+Third element of the list does not have a name, as we can see by [[3]]. It is a matrix that we have previousely made.
+
+### Factors
+
+Factors are data type simmilar ro vectors, but with one difference - elements in a factor are previousely defined - levels. All elements can be one of the defined levels and nothing else. 
+
+```{r}
+
+gender <- c(rep("male",20), rep("female", 30)) 
+gender <- factor(gender) 
+gender
+gender[2] <- "unknown"
+gender
+as.numeric(gender)
+xx <- factor(sample(1:15,20, replace = T))
+as.numeric(xx)
+xx
+```
+
+These are basic types of data in R. Now we will go through them in more detail and learn how to use them. 
+
+# Vectors
+
+## The basics
+
+Simplest data sets in R are called **vector**s. When you want to store a single element in a vector, you can do it just by using <- operator. Number 3 is saved in a vector "somenumber". Call the vector to check that the number is indeed there.
+
+```{r}
+somenumber <- 3
+somenumber
+```
+
+You can make a vector by using the function c() (concatenate). Here is an example of vectors myFirstvector, and myFirstSequence:
+
+```{r}
+myFirstVector <- c("some words","p","word", "last one")
+myFirstSequence <- 1:4
+```
+MyFirstVector is a vector that contains four elements of type character; "some words", "p", "word" and "last one". As mentioned before, vectors always contain the same type of elements. We can make a sequence form 1 to 4 explicitely by using c(1,2,3,4), but there is a quicker way to do this in R, by using : (so c(1,2,3,4) is the same as 1:4).
+
+
+
+## Subsetting
+
+You can access individual elements of a vector by position they are stored in. We use **[ ]** to do this.
+
+```{r}
+# prints the whole vector
+myFirstVector
+myFirstSequence
+# prints third element in a vector
+myFirstVector[3]
+myFirstSequence[3]
+
+```
+
+### Exercise 1: create a vector.   
+1. Create a vector named myvector that contains numbers 15,16,17,18 and 20.  
+
+```{r}
+myvector <- c(15:18,20)
+
+```
+
+You can also access multiple individual numbers at once by providing a vector of positions to look at:
+
+```{r}
+somePositions <- c(1,3)
+somePositions
+
+myFirstVector[c(1,3)]
+
+myFirstVector
+myFirstVector[somePositions]
+
+```
+
+### Exercise 2: Subsetting a vector  
+1. Get second, third and fourth element of myvector.  
+2. What do we expect to get if we write myvector[myFirstSequence]?    
+```{r}
+myvector[c(1,9)]
+
+```
+
+##Basic operations with vectors
+Basic operations are defined for vectors - same as for numbers. You can add vectors, substract them, multiply, divide and even use mod and div operators. We can store result in a vector if we need it for later.
+
+###Exercise 3: multiplication by constant  
+1. Check what myFirstSequence looks like.  
+2. Multiply myFirstSequence by 0.1 and store the result in a vector "result?  
+
+### Exercise 4: multiplication of vectors of same size  
+
+1. You can also do this for two vectors of same size. Check what happens when you multiply someothervector with myvector. Store the result in a variable result2.  
+2. Call the variable myresult2 to see what it contains  
+3. What will happen if you write myvector[someothervector]?  
+
+```{r}
+someotherVector <- c(1,0,1,0,1)
+someotherVector
+myvector
+
+myvector[someotherVector]
+myvector[as.logical(someotherVector)]
+
+
+```
+
+### Exercise 5: Basic comparisons  
+
+You can easily check any logical statements on vectors. For example, check if numbers stored in vectors are larger than 18 by typing myvector>18. You can also use check for smaller (<), smaller or equal ( <=) , larger or equal( >=) , equal(==), not equal(!=).  
+
+```{r}
+myvector>18
+
+```
+
+1. Print myvector to see how it looks like.
+2. Check which positions of myvector are equal to 17
+3. check which positions of myvector are not equal to 15
+4. Check if variable result (from Exercise 3 ) is equal to expected result:   
+
+```{r}
+
+which(myvector==17)
+myvector[myvector>16]
+
+(myvector>16)&(myvector<15)
+(myvector>16)|(myvector<15)
+myvector
+```
+
+###Exercise 6: logical operators
+
+With logical statements we can use logical operators. Logocal operators are signs that are used to connect more logical terms into one. There are 3 basic: and ( & ), OR ( | ) and NOT (!).
+If we have two conditions, first one writen in row and second in column, the following table represents result for AND:
+$$
+\begin{bmatrix}
+first-second&TRUE&FALSE\\
+TRUE&TRUE&FALSE\\
+FALSE&FALSE&FALSE\\
+\end{bmatrix}\
+$$
+OR:
+$$
+\begin{bmatrix}
+first-second&TRUE&FALSE\\
+TRUE&TRUE&TRUE\\
+FALSE&TRUE&FALSE\\
+\end{bmatrix}\
+$$
+They are used in a following way: 
+
+```{r}
+firstLogical <- c(TRUE, TRUE, FALSE, FALSE) 
+secondLogical <- c(TRUE, FALSE, TRUE, FALSE)
+firstLogical & secondLogical
+firstLogical | secondLogical
+! firstLogical
+
+```
+
+
+You can also subset by logical indexes. Only elements on those positions where logical expression is TRUE will be returned. For example:  
+```{r}
+myvector[c(TRUE, FALSE, TRUE, FALSE, FALSE)]# returns only elements where TRUE is - elements in position 1 and 3
+
+```
+
+This is a very powerful thing. 
+
+##Exercise 7: Using logic  
+1. Add a number 5 to the beginning of vector myFirstSequence. 
+2. Assign names "first" , "second", ... to elements of myvector. Use function names.
+3. Check which elements in myvector are larger than myFirstSequence+15. Bonus: checkout function which.  
+
+```{r}
+myFirstSequence <- c(5, myFirstSequence)
+names(myvector) <- c("first", "second", "th", "f", "fi")
+myvector[myvector>(myFirstSequence+15)]
+myvector
+myFirstSequence+15
+
+
+```
+
+##Exercise 8: adding subsets  
+
+1. Add first two and last two numbers of variable myvector together. Bonus: checkout function length  
+
+###Exercise 9: Negative indexes  
+When you use negative indices to subset a vector, the result is that vector withouth element in negative position. For example:  
+
+```{r}
+myvector[-3] #returns all elements except the first one
+myvector[(myvector>4)] #returns all elements except the first one
+
+
+```
+
+1. Write an expression that will subset only first, third and fifth element of a vector. Do it both with positive  
+2. ...and negative indexes.  
+```{r}
+myvector[c(1,3,5)]
+myvector[c(T,F,T,F,T)]
+myvector[(1:5)%%2==T]
+
+```
+
+
+
+###Exercise 10: logical indexes  
+
+1. Check which numbers in myvector are larger than 16 AND smaller than 20. Hint: Use ( ) to group logical statements.  
+
+### Exercise 11: recycling
+
+1. Make a new vector "newvector" that will have 2 elements: 2 and 3.  
+2. Add newvector to myvector and store the result in a variable result3. What happened? What does result3 contain? Where is the message that appeared? Print myvector and newvector to get a hint.   
+```{r}
+newvector <- 2:3
+newvector+myvector
+myvector[c(T,F)]
+```
+
+
+
+###Exercise 12: logical indexes and recycling  
+1. Use recycling and a vector containing TRUE and FALSE to get all numbers in even positions in myvector  
+2. Use %% and == to get positions of all even elements in myvector  
+```{r}
+myvector[myvector%%3==0]
+
+```
+
+
+
+### Exercise 12: type conversion
+Create a vector that will contain logical TRUE, numbers 5 and 4 and words "no more". Add numbers from vector together (2nd and 3rd element).  
+```{r, eval=FALSE}
+vv <- c(2,3,"nesto")
+as.numeric(vv)
+```
+This did not work. Why? Check what your vector looks like. Use typeof() to check the type of data stored in any variable.
+
+```{r}
+
+
+
+```
+This happened because vectors can only store same type of data as elements. If you don't want to convert between types and you wish to store various types of data in one variable, you can use lists. Lists are only briefly explained here so you know how to deal with them but they will not be needed in this course.
+
+```{r}
+someList <- list(TRUE, 5, 4,"no more")
+someList
+
+someList[[2]]+someList[[3]]
+someList[2][[1]]
+
+```
+Esentially, lists are vectors, but with a special twist.. We know that vectors store same types of elements, so how are lists vectors? Remember that we call an element of a vector with a single bracket, []. Try to see what is the type of someList[1]. This means, call the first element of a vector someList. Then call the first element of the list someList. Lists are built recursivly. 
+All you need to know about lists is that unlike vectors, they can store different elements, and every element can be accesed with [[ ]] instead of []. 
+```{r}
+someList
+someList[[1]]
+someList[[2]]
+
+```
+
+###Exercise 13: accessing elements in a list
+Add the numbers from the list together. hint: Just like you would in a vector, but this time use double brackets [[ ]] instead of single [ ] .
+```{r}
+
+
+```
+
+Lists are very useful in R, but it is not neccessary to cover them in this short course. You need to know how you can get from list to vector. This  can be done with a simple unlist() function.
+
+###Exercise 14: From list to vector.
+
+Use unlist() function with someList as parametar and see what you get.
+```{r}
+unlist(someList)
+
+```
+
+## Matrices
+### Exercise 15: Basic operations on matrices:
+
+1) Create a matrix A with random numbers from 1 to 100, in 4 rows, use function sample.  
+```{r}
+
+set.seed(6)
+x <- sample(1:100,16)
+A <- matrix(x,4,byrow = T)
+A
+```
+
+2) Create a matrix B with 4 columns, each column contains numbers that correspond to that column. Hint: Use rep()    
+```{r}
+rep(1:4,each=4)
+
+```
+
+3) Multiply A and B using *  
+4) Multiply A and B using %*%  
+5) Add a row to A that will represent sum of all numbers in columns of A.  
+```{r}
+A <- rbind(A, colSums(A))
+
+
+
+```
+
+6) What is the sum of the diagonal elements of A? Use functions sum and diag.  
+```{r}
+sum(diag(A))
+```
+
+
+7) What is the product of last two elements of second row of A and first and last element in first column of B?  
+```{r}
+A[2, 3:4]*B[c(1,4),1]
+```
+
+
+8) What is the sum of all numbers larger than 5 in matrix A?  
+```{r}
+sum(A[A>5])
+
+which(A>5, arr.ind = T)
+```
+
+9) How many numbers in A are divizable by 3?  
+```{r}
+sum(A%%3==0)
+```
+
+10) What are the positions of numbers divizable by 3 in A?  
+```{r}
+ovepozicije<-which(A%%3==0, arr.ind = T)
+A[which(A%%3==0)]
+```
+
+###Example:Structure
+How to check type of elements?
+```{r}
+typeof(matrix15)
+str(matrix15)
+?sample()
+
+```
+
+
+## Data frames
+
+Data frame is a matrix that can store different variable types of same length. There are some data frames included to R. One of them is iris data set. This famous (Fisher's or Anderson's) iris data set gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris setosa, versicolor, and virginica.
+
+To check how a data frame looks like, you can use function head - it will show you the first 6 rows of a data frame.
+```{r}
+
+head(iris)
+str(iris)
+?iris
+unique(iris[,5])
+```
+
+If you want to know more information about how the data frame is structured, use function str. You can also check for each column separately by using the function class.
+```{r}
+str(iris)
+class(iris[,1])
+
+```
+
+Data frames are usually structured such that rows represent observations and columns represent variables. You can check names of columns and rows by following functions:
+```{r}
+
+iris$Species
+iris[,5]
+rownames(iris)
+iris2 <- iris
+colnames(iris2) <- c("a","a","b","b","b")
+head(iris2)
+iris2[,c("a","b")]
+rownames(iris2)[1:2] <- "1"
+nrow(iris)
+ncol(iris)
+```
+
+
+To access a variable (column), call it by name using $ or [,""], or by position with [, ]. (Same as in matrices)
+```{r}
+iris$Sepal.Width
+iris$Sepal.Length
+iris[c(1,7),"Sepal.Width"]
+iris[,2]
+
+```
+
+You can subset a data frame by using the subset() function, or by indices. 
+
+```{r}
+head(iris[iris$Petal.Length < 2.5, ])
+(subset(iris, Petal.Length < 2.5))
+
+```
+
+### Exercise 16: Basic operations on data.frames
+1) How would you get the petal width of the 10th row of the dataset (do it both with "[" and "$"? 
+```{r}
+iris[10,"Petal.Width"]
+iris$Petal.Width[10]
+```
+  
+2) How about all DISTINCT petal widths of the dataset? Hint: Use unique()  
+```{r}
+unique(iris$Petal.Width)
+
+```
+
+3) Return rows of the dataset that contain data pertaining to the virginica species only.   
+```{r}
+head(iris)
+subset(iris, Species=="virginica")
+
+svivirginicaredovi <- iris$Species=="virginica"
+iris[svivirginicaredovi,]
+
+
+iris[iris$Species=="virginica",]
+
+
+```
+
+4) Copy iris to my.iris. Return mean sepal widths of all the versicolor flowers. 
+```{r}
+sviversicolor <- iris[iris$Species=="versicolor",]
+sepwidthVersicolor <- sviversicolor$Sepal.Width
+mean(sepwidthVersicolor)
+
+
+mean(iris[iris$Species=="versicolor","Sepal.Width"])
+
+
+```
+
+5) Add another variable to my.iris, Petal.Width.Sqrd, which contains squared widths of the petal widths.  
+```{r}
+iris$Petal.Width.Sqrd <- iris$Petal.Width^2
+head(iris)
+
+
+```
+
+6) Remove the Sepal.Length variable from my.iris. What happens when you try to execute iris[["Sepal.length"]] or iris[1] or iris[[1]]?  
+```{r}
+iris[["Sepal.Length"]]
+iris[1]
+iris[[1]]
+str(iris)
+```
+
