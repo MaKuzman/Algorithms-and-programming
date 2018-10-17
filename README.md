@@ -53,8 +53,17 @@ output:
 
 #### Package: data.table  
 - i: selecting rows
-- j: selecting columns, returning list list() / .()
+ - j: selecting columns, returning list list() / .()
 - by: by
+- operations on columns
+- adding new columns
+- .N, .I, .GRP
+- keys
+- .SD, .SDcols
+- {}: supressing intermediate output
+- merge
+- roll
+- foverlaps
       
 #### Regular expressions  
 - grep
