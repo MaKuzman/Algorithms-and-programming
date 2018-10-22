@@ -1,0 +1,545 @@
+Lecture 3: Regular Expressions
+========================================================
+author: Maja Kuzman
+date: October 22 2018
+width: 1400
+height: 1000
+
+Regular expressions
+========================================================
+
+- Special text for describing search patterns
+- Uses special characters
+- Many tools and programming languages support it
+
+Download Notepad++<https://notepad-plus-plus.org/>
+
+All positions with some substring
+========================================================
+
+Imagine we have a set of words in a vector:  
+```{r}
+reg.exmpl <- c("krava", "plava", "prava", "plavac","tava", "vatra", "bla", "blabla", "blablabla", 
+               "abcabcabc", "abcblaabc", "blaXblaX", "abcYabc", "abc1z", "abc4z","plllava",
+               "pava", "XX","XnblaX")
+
+reg.exmpl
+```
+
+Problem: We want to find all words that contain the substring "va".
+```{r, eval=FALSE}
+grep(pattern, x, ignore.case = FALSE, perl = FALSE, value = FALSE,
+     fixed = FALSE, useBytes = FALSE, invert = FALSE)
+
+```
+
+
+Find substring
+========================================================
+```{r, echo=FALSE}
+reg.exmpl
+
+```
+
+If we want to find all words that contain the substring "va",  
+we can do it with grep:  
+```{r}
+grep("va", reg.exmpl)
+grep("va", reg.exmpl, value=T)
+```
+
+^ $: Starting or ending with substring
+========================================================
+```{r, echo=FALSE}
+reg.exmpl
+```
+
+Symbol ^ represents begining of the string:  
+```{r}
+grep("^va", reg.exmpl, value=T)
+```
+Symbol $ represents end of the string: 
+```{r}
+grep("ra$", reg.exmpl, value=T)
+```
+
+A character not known
+========================================================
+```{r, echo=FALSE}
+reg.exmpl
+```
+We want to find all words that look like: "p" followed by any one character, followed by "ava".  
+
+In our case this would be plava, prava.   
+When we are not sure of which character we expect, we can just write . instead of that character.  
+
+```{r}
+grep("p.ava", reg.exmpl, value=T)
+```
+
+
+[ ]: One of characters 
+========================================================
+```{r, echo=FALSE}
+reg.exmpl
+```
+If we want to find words containing lava or tava as a substring, we can write that as:  
+
+```{r}
+grep("[lt]ava", reg.exmpl, value=T)
+```
+
+Here, [lt] represents ONE character - either l or t in this position. 
+
+Number of repetitions
+========================================================
+When we dont know the number of occurrences of some character, we can use special symbols to describe what we expect:  
+
+```
+? - zero or one
++ - one or more
+* - zero or more
+```
+```{r, echo=FALSE}
+lll <- c("Eample1","Example1", "Exxample1", "Exxxample1")
+lll
+```
+
+***
+For example,  
+
+```{r}
+grep("Ex?ample1", lll, value = T)
+grep("Ex+ample1", lll, value = T)
+grep("Ex*ample1", lll, value = T)
+```
+
+Exercise - Number of repetitions
+========================================================
+When we dont know the number of occurrences of some character, we can use special symbols to describe what we expect:  
+
+```
+? - zero or one
++ - one or more
+* - zero or more
+{somenumber} - exactly somenumber times
+```
+```{r, echo=FALSE}
+lll <- c("Eample1","Example1", "Exxample1", "Exxxample1")
+lll
+```
+
+***
+Try to guess what will the following code produce:   
+A)  "*"    
+```{r, eval=FALSE}
+grep("x*",lll,value = T)
+```
+
+B)  "+"  
+```{r, eval=FALSE}
+grep("x+",lll,value = T)
+```
+
+C)  "?"  
+```{r, eval=FALSE}
+grep("x?",lll,value = T)
+```
+
+Solved - Number of repetitions
+========================================================
+When we dont know the number of occurrences of some character, we can use special symbols to describe what we expect:  
+
+```
+? - zero or one
++ - one or more
+* - zero or more
+```
+```{r, echo=FALSE}
+lll <- c("Eample1","Example1", "Exxample1", "Exxxample1")
+lll
+```
+
+***
+```{r}
+grep("x*",lll,value = T)
+grep("x+",lll,value = T)
+grep("x",lll,value = T)
+```
+
+Number of repetitions
+========================================================
+When we know the number of occurrences of some character, we can use this:  
+
+```
+{somenumber} - this symbol appears here exactly somenumber times in a row
+
+{somenumberA, somenumberB} - this symbol appears here from somenumberA to somenumberB times in a row
+```
+```{r, echo=FALSE}
+lll
+```
+
+***
+For example,  
+
+```{r}
+grep("Ex{2}ample", lll, value = T)
+grep("Ex{1,4}ample", lll, value = T)
+
+```
+
+
+Exercise 2 - Number of repetitions
+========================================================
+When we know the number of occurrences of some character, we can use this:  
+
+```
+{somenumber} - this symbol appears here exactly somenumber times in a row
+
+{somenumberA, somenumberB} - this symbol appears here from somenumberA to somenumberB times in a row
+```
+```{r, echo=FALSE}
+lll
+```
+
+***
+What do you expect to get now?  
+A) 
+
+```{r, eval=FALSE}
+grep("x{2}", lll, value = T)
+```
+
+  
+B) 
+
+```{r, eval=FALSE}
+grep("x{0,2}", lll, value = T)
+```
+
+  
+C) 
+
+```{r, eval=FALSE}
+grep("x{2}a", lll, value = T)
+```
+
+C) 
+
+```{r, eval=FALSE}
+grep("Ex{2}a", lll, value = T)
+```
+
+Solved - Number of repetitions
+========================================================
+When we know the number of occurrences of some character, we can use this:  
+
+```
+{somenumber} - this symbol appears here exactly somenumber times in a row
+
+{somenumberA, somenumberB} - this symbol appears here from somenumberA to somenumberB times in a row
+```
+```{r, echo=FALSE}
+lll
+```
+
+***
+Explain why this happens:  
+```{r}
+grep("x{2}", lll, value = T)
+grep("x{0,2}", lll, value = T)
+grep("x{2}a", lll, value = T)
+grep("Ex{2}a", lll, value = T)
+```
+
+Exercise - SINGLE CHARACTER
+========================================================
+```
+^ - starting character
+$ - ending character
+. - any character
+[ ] - one of characters
+
++ - zero or one
+? - zero or more
+* - one or more
+
+{n} - exactly n
+{a, b} - from a to b
+
+```
+```{r}
+reg.exmpl
+```
+
+***
+From the reg.exampl vector, get only the following words:
+```{r, echo=FALSE}
+grep("p.ava$" , reg.exmpl, value = T)
+grep("^.ava" , reg.exmpl, value = T)
+```
+
+Use ., { } and '[ ]' (and other signs if necesary) to get the following in 3 different ways:   
+```{r, echo=FALSE}
+grep("^..ava$" , reg.exmpl, value = T)
+```
+
+Exercise - SINGLE CHARACTER
+========================================================
+```
+^ - starting character
+$ - ending character
+. - any character
+[ ] - one of characters
+
++ - zero or one
+? - zero or more
+* - one or more
+
+{n} - exactly n
+{a, b} - from a to b
+
+```
+```{r}
+reg.exmpl
+```
+
+***
+From the reg.exampl vector, get only the following words:
+```{r}
+grep("p.ava$" , reg.exmpl, value = T)
+grep("^.ava" , reg.exmpl, value = T)
+```
+
+Use ., { } and '[ ]' (and other signs if necesary) to get the following in 3 different ways:   
+```{r, eval=FALSE}
+grep("^..ava$" , reg.exmpl, value = T)
+grep("^.{2}ava$" , reg.exmpl, value = T)
+grep("[kp][lr]ava$" , reg.exmpl, value = T)
+```
+
+
+Grep special characters
+========================================================
+What if we want to find "?"?  
+Look at the following example:  
+```{r}
+primjer2 <- c("How","to", "find ", "a", "question", "mark?")
+primjer2
+```
+
+Since ? is a special character, if we try to use it like this:  
+```{r}
+grep("?", primjer2,value=T)
+```
+We wont get what we want. 
+We use "\" to tell grep that we want the real sign and not the special ability of that sign!
+```{r, eval=FALSE}
+grep("\?", primjer2,value=T)
+```
+
+TWIST: since "\" is a special sign, we also need to use "\" before it. :)
+```{r}
+grep("\\?", primjer2,value=T)
+```
+
+
+
+[^ ] NOT OF
+========================================================
+If you want to find a character that is NOT some character, use "[^ ]"
+```{r}
+reg.exmpl
+```
+```{r}
+grep(".ava", reg.exmpl, value = T)
+grep("[^l]ava", reg.exmpl, value = T)
+```
+
+
+
+Exercise
+========================================================
+```
+^ - starting character
+$ - ending character
+. - any character
+[ ] - one of characters
+[^ ] - NOT any of characters
+
++ - zero or one
+? - zero or more
+* - one or more
+
+{n} - exactly n
+{a, b} - from a to b
+
+```
+***
+Explain what do the following regexes mean:
+```
+.at
+[hc]at
+[^hc]at
+^[hc]at
+[hc]at$
+\[.\]
+\\[.\\]
+[hc]?at
+[hc]*at
+[hc]+at
+cat|dog
+```
+
+Exercise
+========================================================
+```
+^ - starting character
+$ - ending character
+. - any character
+[ ] - one of characters
+[^ ] - NOT any of characters
+
++ - zero or one
+? - zero or more
+* - one or more
+
+{n} - exactly n
+{a, b} - from a to b
+
+```
+***
+Explain what do the following regexes mean:
+```
+[A-Za-z]
+[A-Za-z0-9]
+[ \\t]
+[^0-9]
+\\t
+\\n
+\\v
+\\d+
+\\d*
+```
+Groups
+========================================================
+When we want to find groups of characters, we can do it like this:  
+```{r}
+primjer <- c("GRP1", "GRP2", "GRP3","GRP1GRP2", "GRP1GRP3", "GRP2GRP3", "GRP1GRP1GRP2", "GRP1GRP1GRP3", "GRP1GRP2GRP3","GRP2GRP3","GRP2GRP1GRP2", "GRP2GRP1GRP3", "GRP2GRP2GRP3", "GRP3GRP1GRP2", "GRP3GRP1GRP3", "GRP3GRP2GRP3", "GRP1GRP2GRP1GRP3", "GRP1GRP2GRP2GRP3", "GRP1GRP3GRP2GRP3")
+primjer <- sort(unique(primjer))
+```
+***
+If we want to work on a group of characters, put them in round brackets!  
+
+All words where "GRP1" is repeated 2 times in a row:  
+```{r}
+grep("(GRP1){2}", primjer, value=T)
+```
+
+All words where "GRP1" is repeated 1 or more times before GRP2 :  
+```{r}
+grep("(GRP1)+(GRP2)", primjer, value=T)
+```
+
+Groups
+========================================================
+
+When you want either of two groups to be repeated, use "|" sign inside of parenthesis:  
+```{r}
+grep("^(GRP1|GRP2)GRP2", primjer, value=T)
+```
+
+What does the following return?:  
+```{r}
+grep("^(GRP1|GRP2)+", primjer, value=T)
+```
+
+
+Group repetitions
+========================================================
+If you want to find group of characters, and then repeat any of the groups, use NUMBER of the group to repeat:  
+```{r}
+grep("^(GRP1|GRP2)\\1", primjer, value=T)
+```
+
+
+
+Exercise
+========================================================
+
+In the reg.exampl, 
+A)  find all words where "bla" or "abc" are in a sequence repeated 3 times:  
+```{r, echo=FALSE}
+grep("(abc|bla){3}", reg.exmpl, value=T)
+```
+
+B) All words where "bla" or "abc" are repeated 2 to 3 times:  
+```{r, echo=FALSE}
+grep("(abc|bla){2,3}", reg.exmpl, value=T)
+```
+
+C) All words where "bla" appears 0 or 1 time:  
+```{r, echo=FALSE}
+grep("(bla)?", reg.exmpl, value=T)
+```
+
+D) All words where "bla" appears 0 or 1 time between "X" and "X":
+(so we want somethingXX or somethingXblaX)
+```{r, echo=FALSE}
+grep("X(bla)?X", reg.exmpl, value=T)
+```
+Exercise - SOLVED
+========================================================
+
+In the reg.exampl, 
+A)  find all words where "bla" or "abc" are in a sequence repeated 3 times:  
+```{r}
+grep("(abc|bla){3}", reg.exmpl, value=T)
+```
+
+B) All words where "bla" or "abc" are repeated 2 to 3 times:  
+```{r}
+grep("(abc|bla){2,3}", reg.exmpl, value=T)
+```
+
+C) All words where "bla" appears 0 or 1 time:  
+```{r}
+grep("(bla)?", reg.exmpl, value=T)
+```
+
+D) All words where "bla" appears 0 or 1 time between "X" and "X":
+(so we want somethingXX or somethingXblaX)
+```{r}
+grep("X(bla)?X", reg.exmpl, value=T)
+```
+
+Exercise 
+========================================================
+
+E) Find abc or bla followed by X or Y and then first group repeated
+```{r, echo=FALSE}
+reg.exmpl
+grep("(abc|bla)[XY]\\1", reg.exmpl, value=T)
+```
+F) Find abc or bla followed by X or Y and then first group repeated and then second group repeated, in the vector 
+c("abcX", "abcXbla", "abcXbla", "abcXabcX", "abcXabcY")
+```{r, echo=FALSE}
+grep("(abc|bla)([XY])\\1\\2", c("abcX", "abcXbla", "abcXbla", "abcXabcX", "abcXabcY"), value=T)
+```
+
+
+
+Exercise -SOLVED
+========================================================
+
+E) Find abc or bla followed by X or Y and then first group repeated
+```{r}
+reg.exmpl
+grep("(abc|bla)[XY]\\1", reg.exmpl, value=T)
+```
+F) Find abc or bla followed by X or Y and then first group repeated and then second group repeated, in the vector 
+c("abcX", "abcXbla", "abcXbla", "abcXabcX", "abcXabcY")
+```{r}
+grep("(abc|bla)([XY])\\1\\2", c("abcX", "abcXbla", "abcXbla", "abcXabcX", "abcXabcY"), value=T)
+```
