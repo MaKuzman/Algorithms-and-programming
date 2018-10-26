@@ -24,10 +24,10 @@ Use meaningful email, name and password. You will use this account throughout th
 
 Install prerequisites:
 ```
-install.packages(c("ggplot2", "tidyr", "dplyr", "stringr","data.table", "plotly", "gridExtra"))
+install.packages(c("ggplot2", "tidyr", "dplyr", "stringr", "plotly", "gridExtra", "RCircos", "Rcpp", "data.table"))
 source("https://bioconductor.org/biocLite.R")
 biocLite()
-biocLite(c("Biostrings", "ShortRead", "biomaRt", "GenomicRanges", "IRanges", "ggbio", "Sushi", "RCircos"))
+biocLite(c("Biostrings", "ShortRead", "biomaRt", "GenomicRanges", "IRanges", "ggbio", "Sushi"))
 ```
 
 
