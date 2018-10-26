@@ -27,7 +27,7 @@ Install prerequisites:
 install.packages(c("ggplot2", "tidyr", "dplyr", "stringr","data.table", "plotly", "gridExtra"))
 source("https://bioconductor.org/biocLite.R")
 biocLite()
-biocLite(c("Biostrings", "shortRead", "biomaRt", "GenomicRanges", "IRanges", "ggbio", "Sushi", "RCircos"))
+biocLite(c("Biostrings", "ShortRead", "biomaRt", "GenomicRanges", "IRanges", "ggbio", "Sushi", "RCircos"))
 ```
 
 
