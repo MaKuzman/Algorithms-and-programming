@@ -116,7 +116,7 @@ This repository now belongs to you and you can work on it.
   i) Version control button -> commit  
    ![committing](https://user-images.githubusercontent.com/37149324/46142587-bfc37080-c257-11e8-82d3-ce15c6738832.JPG)
 
-  ii) Select the files you would like to upload, write a description of what you did, Puch it online.  
+  ii) Select the files you would like to upload, write a description of what you did, Push it online.  
   ![commiting](https://user-images.githubusercontent.com/37149324/46142588-bfc37080-c257-11e8-9842-8449508c4ea9.JPG)
 
 #### That is all!
