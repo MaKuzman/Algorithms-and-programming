@@ -98,7 +98,7 @@ If this is all done, you are ready to accept your first assignment!
 
 In GitHub, many projects are open source. This means that you can see all the files (and all code) for them. If you create a gitHub account with any email adress, all your repositories will be publicly available. This means that when you do your homework and push it to your account, anyone who gooogles you will see the code. We don't want this now, so we will make private repositories for homeworks. This is why we will use GitHub Classroom - a gitHub service for educational purposes which lets you copy the assignment which I had prepared, to your own private directory. This directory is easy to access and copy locally with Rstudio. After you change the document (solve the homework, update the lectures), it is very easy to upload it back to your GitHub folder.
 
-Here is the link to the first assignment you will have to accept, so lets try! 
+Here is the link to the first assignment you will have to accept, so lets try! https://classroom.github.com/a/w3f1FcqY 
 
 After you accept the assignment, a private repository will be created for you with the name: https://github.com/UNIZG-PMF-Bioinfo/test-assignment-YOURNAME 
 
