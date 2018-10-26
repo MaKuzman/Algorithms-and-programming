@@ -1,9 +1,10 @@
-title: "Preparation for the course"
+# "Preparation for the course"  
+
 ![](https://user-images.githubusercontent.com/37149324/46141952-b0dbbe80-c255-11e8-9cca-da81fc04bbb2.png)  
 
 
 
-# Setting up to Git and Rstudio
+## Setting up to Git and Rstudio
 
 
 
