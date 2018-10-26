@@ -1,13 +1,36 @@
----
 title: "Preparation for the course"
-output: html_notebook
----
 ![](https://user-images.githubusercontent.com/37149324/46141952-b0dbbe80-c255-11e8-9cca-da81fc04bbb2.png)  
 
 
 
-#### Welcome to Algorithms and Programming 2018 course!  
+# Setting up to Git and Rstudio
 
+
+
+### 1. Download [Git](https://git-scm.com/downloads)
+
+#### Make an account on [GitHub](https://github.com/join)
+
+
+
+Use meaningful email, name and password. You will use this account throughout the course and hopefully later in life as well. If you use your university provided email, you will be able to have private repositories as well, which can not be seen by others. However, for the purpose of this course, you can use any email you want and all your repositories connected to this course will be private.
+
+
+
+
+
+### 2. Download [R >= 3.5]()
+
+Install prerequisites:
+```
+install.packages(c("ggplot2", "tidyr", "dplyr", "stringr","data.table", "plotly", "gridExtra"))
+source("https://bioconductor.org/biocLite.R")
+biocLite()
+biocLite(c("Biostrings", "shortRead", "biomaRt", "GenomicRanges", "IRanges", "ggbio", "Sushi", "RCircos"))
+```
+
+
+### 3. Download [Rstudio >= 1.1](https://www.rstudio.com/products/rstudio/download/#download)
 
 
 During this course you will learn to use R efficiently. In adition to learning R, (and perhaps more importantly) throughout this course you will use GitHub as a version control system. 
@@ -30,29 +53,9 @@ The way to prevent this is to use [version control](https://vimeo.com/41027679).
 
 
 
-So lets avoid unneccessary mistakes and start clean from the start: installing Git.
+So lets avoid unneccessary mistakes and start clean from the start:
 
 
-
-# Setting up to Git and Rstudio
-
-
-
-### 1. Download [Git](https://git-scm.com/downloads)
-
-#### Make an account on [GitHub](https://github.com/join)
-
-
-
-Use meaningful email, name and password. You will use this account throughout the course and hopefully later in life as well. If you use your university provided email, you will be able to have private repositories as well, which can not be seen by others. However, for the purpose of this course, you can use any email you want and all your repositories connected to this course will be private.
-
-
-
-
-
-### 2. Download [R >= 3.5]()
-
-### 3. Download [Rstudio >= 1.1](https://www.rstudio.com/products/rstudio/download/#download)
 
 ### 4. Connect GitHub to Rstudio:
 
